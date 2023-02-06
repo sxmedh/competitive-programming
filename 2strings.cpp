@@ -19,4 +19,10 @@ int main()
     //  getline takes the input from the cursor is placed
     cin.ignore();
     // by using cin.ignore the cursor is shifted to the next line
+    string s;
+    for (int i = 0; i < 5; i++)
+    {
+        s.push_back('a');
+    }
+    cout << s << endl;
 }

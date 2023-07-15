@@ -1,99 +1,64 @@
 // C++ program for Merge Sort
-#include <iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-// Merges two subarrays of array[].
-// First subarray is arr[begin..mid]
-// Second subarray is arr[mid+1..end]
-void merge(int array[], int const left, int const mid,
-           int const right)
+void merge(vector<int> &arr, int low, int mid, int high)
 {
-    auto const subArrayOne = mid - left + 1;
-    auto const subArrayTwo = right - mid;
-
-    // Create temp arrays
-    auto *leftArray = new int[subArrayOne],
-         *rightArray = new int[subArrayTwo];
-
-    // Copy data to temp arrays leftArray[] and rightArray[]
-    for (auto i = 0; i < subArrayOne; i++)
-        leftArray[i] = array[left + i];
-    for (auto j = 0; j < subArrayTwo; j++)
-        rightArray[j] = array[mid + 1 + j];
-
-    auto indexOfSubArrayOne = 0,   // Initial index of first sub-array
-        indexOfSubArrayTwo = 0;    // Initial index of second sub-array
-    int indexOfMergedArray = left; // Initial index of merged array
-
-    // Merge the temp arrays back into array[left..right]
-    while (indexOfSubArrayOne < subArrayOne && indexOfSubArrayTwo < subArrayTwo)
+    vector<int> temp;
+    int pt1 = low;
+    int pt2 = mid + 1;
+    while (pt1 <= mid && pt2 <= high)
     {
-        if (leftArray[indexOfSubArrayOne] <= rightArray[indexOfSubArrayTwo])
+        if (arr[pt1] <= arr[pt2])
         {
-            array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-            indexOfSubArrayOne++;
+            temp.push_back(arr[pt1]);
+            pt1++;
         }
         else
         {
-            array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-            indexOfSubArrayTwo++;
+            temp.push_back(arr[pt2]);
+            pt2++;
         }
-        indexOfMergedArray++;
     }
-    // Copy the remaining elements of
-    // left[], if there are any
-    while (indexOfSubArrayOne < subArrayOne)
+    while (pt1 <= mid)
     {
-        array[indexOfMergedArray] = leftArray[indexOfSubArrayOne];
-        indexOfSubArrayOne++;
-        indexOfMergedArray++;
+        temp.push_back(arr[pt1]);
+        pt1++;
     }
-    // Copy the remaining elements of
-    // right[], if there are any
-    while (indexOfSubArrayTwo < subArrayTwo)
+
+    //  if elements on the right half are still left //
+    while (pt2 <= high)
     {
-        array[indexOfMergedArray] = rightArray[indexOfSubArrayTwo];
-        indexOfSubArrayTwo++;
-        indexOfMergedArray++;
+        temp.push_back(arr[pt2]);
+        pt2++;
     }
-    delete[] leftArray;
-    delete[] rightArray;
+
+    // transfering all elements from temporary to arr //
+    for (int i = low; i <= high; i++)
+    {
+        arr[i] = temp[i - low];
+    }
 }
 
-// begin is for left index and end is
-// right index of the sub-array
-// of arr to be sorted */
-void mergeSort(int array[], int const begin, int const end)
+void mergeSort(vector<int> &arr, int low, int high)
 {
-    if (begin >= end)
-        return; // Returns recursively
-
-    auto mid = begin + (end - begin) / 2;
-    mergeSort(array, begin, mid);
-    mergeSort(array, mid + 1, end);
-    merge(array, begin, mid, end);
+    if (low >= high)
+    {
+        return;
+    }
+    int mid = (low + high) / 2;
+    mergeSort(arr, low, mid);
+    mergeSort(arr, mid + 1, high);
+    merge(arr, low, mid, high);
 }
-
-// UTILITY FUNCTIONS
-// Function to print an array
-void printArray(int A[], int size)
-{
-    for (auto i = 0; i < size; i++)
-        cout << A[i] << " ";
-}
-
 // Driver code
 int main()
 {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    auto arr_size = sizeof(arr) / sizeof(arr[0]);
-
-    cout << "Given array is \n";
-    printArray(arr, arr_size);
-
-    mergeSort(arr, 0, arr_size - 1);
-
-    cout << "\nSorted array is \n";
-    printArray(arr, arr_size);
+    vector<int> arr = {2, 13, 4, 1, 3, 6, 28};
+    mergeSort(arr, 0, 6);
+    for (auto it : arr)
+    {
+        cout << it << " ";
+    }
     return 0;
 }

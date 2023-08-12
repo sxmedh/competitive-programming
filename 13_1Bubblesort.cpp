@@ -1,17 +1,20 @@
 #include <bits/stdc++.h>
+
 using namespace std;
 
 int main()
 {
-    int arr[] = {7, 2, 3, 1, 4, 6};
+
+    int arr[] = {7, 2, 4, 1, 6, 3};
     int n = 6;
     for (int i = 0; i < n; i++)
     {
-        int j = i + 1;
-        while (arr[j] < arr[j - 1] && j > 0)
+        for (int j = 0; j < n - 1; j++)
         {
-            swap(arr[j], arr[j - 1]);
-            j--;
+            if (arr[j] > arr[j + 1])
+            {
+                swap(arr[j], arr[j + 1]);
+            }
         }
     }
 
@@ -19,6 +22,4 @@ int main()
     {
         cout << arr[i] << " ";
     }
-
-    return 0;
 }

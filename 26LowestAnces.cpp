@@ -38,7 +38,7 @@ void insertNode(int value)
             if (ptr->left == NULL)
             {
                 ptr->left = temp;
-                return;
+                break;
             }
             ptr = ptr->left;
         }
@@ -47,7 +47,7 @@ void insertNode(int value)
             if (ptr->right == NULL)
             {
                 ptr->right = temp;
-                return;
+                break;
             }
             ptr = ptr->right;
         }
@@ -64,16 +64,24 @@ void inorder(node *curr)
     cout << curr->data << " ";
     inorder(curr->right);
 }
-int heightBT(node *curr)
+
+node *LCA(node *curr, int n1, int n2)
 {
-    if (curr == NULL)
+    if ((curr->data == n1 || curr->data == n2) || (curr->data > n1 && curr->data < n2))
     {
-        return 0;
+        return curr;
     }
-    int left = heightBT(curr->left);
-    int right = heightBT(curr->right);
-    return 1 + max(left, right);
+    if (curr->data < n1 && curr->data > n2)
+    {
+        return curr;
+    }
+    if (curr->data < n1 && curr->data < n2)
+    {
+        LCA(curr->right, n1, n2);
+    }
+    LCA(curr->left, n1, n2);
 }
+
 int main()
 {
 
@@ -87,5 +95,9 @@ int main()
     cout << "Inorder" << endl;
     inorder(root);
     cout << endl;
-    cout << "height: " << heightBT(root) << endl;
+    node *answer = LCA(root, 2, 3);
+    if (answer != NULL)
+        cout << "Common ancestor: " << answer->data;
+    else
+        cout << "NO";
 }
